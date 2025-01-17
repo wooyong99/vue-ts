@@ -1,0 +1,53 @@
+[
+    {
+        "id" : 1,
+        "email" : "test1@naver.com",
+        "password" : "test-password",
+        "username" : "test-user1",
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 2,
+        "email" : "test2@naver.com",
+        "username" : "test-user2",
+        "password" : "test-password",
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 3,
+        "email" : "test3@naver.com",
+        "username" : "test-user3",
+        "password" : "test-password",
+        "age": 21,
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 4,
+        "email" : "test4@naver.com",
+        "username" : "test-user4",
+        "password" : "test-password",
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 5,
+        "email" : "test5@naver.com",
+        "username" : "test-user5",
+        "password" : "test-password",
+        "age": 11,
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 6,
+        "email" : "test6@naver.com",
+        "username" : "test-user6",
+        "password" : "test-password",
+        "createdAt" : "2025-01-10"
+    },
+    {
+        "id" : 7,
+        "email" : "test7@naver.com",
+        "username" : "test-user7",
+        "password" : "test-password",
+        "createdAt" : "2025-01-11"
+    }
+]

@@ -1,0 +1,45 @@
+[
+    {
+        "id" : 1,
+        "name" : "상품명",
+        "description" : "상품 설명입니다.",
+        "stock" : 10,
+        "price" : 10000
+    },
+    {
+        "id" : 2,
+        "name" : "상품명2",
+        "description" : "상품 설명입니다.",
+        "stock" : 10,
+        "price" : 10000
+    },
+    {
+        "id" : 3,
+        "name" : "상품명3",
+        "description" : "상품 설명입니다.",
+        "stock" : 10,
+        "price" : 10000
+    },
+    {
+        "id" : 4,
+        "name" : "상품명4",
+        "description" : "상품 설명입니다.",
+        "stock" : 10,
+        "price" : 10000
+    },
+    {
+        "id" : 5,
+        "name" : "상품명5",
+        "description" : "상품 설명입니다.",
+        "stock" : 10,
+        "price" : 10000
+    },
+    {
+        "id" : 6,
+        "name" : "상품명",
+        "description" : "상품 설명입니다.",
+        "stock" : 1,
+        "price" : 1000
+    }
+   
+]
