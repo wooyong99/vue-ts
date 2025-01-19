@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import type { Ref } from 'vue'
 import axios from 'axios'
 import BaseList from '../BaseList.vue';
-
+import BaseOverlay from '../BaseOverlay.vue';
 type Product = {
     id: number,
     name: string,
@@ -14,6 +15,8 @@ type Product = {
 
 const products: Ref<Product[]> = ref([]); // 반응형 데이터
 const isLoading: Ref<Boolean> = ref(true);
+const route = useRoute();
+const router = useRouter();
 
 async function fetchData():Promise<void> {
     await delay(1000);
@@ -35,55 +38,44 @@ onMounted(() => {
     fetchData()
 })
 
+function openPopup(productId: number) {
+    console.log('상품 상세정보 팝업 열림');
+    router.push(`/products/${productId}`)
+}
+
+function closePopup() {
+    router.push(`/products`)
+}
+
 </script>
 
 <template>
-    <BaseList :datas="products">
-    </BaseList>
-    <!-- <div 
-        class="product-list"
-    >
-        <div class="product-list-header">
-            전체 상품 리스트
-        </div>
-        <div class="product-list-content">
-            <div class="product-list-content-nav">
-                <p>번호</p>
-                <p>상품명</p>
-                <p>재고</p>
-                <p>가격</p>
+    <div class="product-list">
+        <div 
+            v-for="(product,index) in products" 
+            :key="index"
+        >
+            <div class="product-list-item" @click="() => openPopup(product.id)">
+                <p>{{ product.id }}</p>
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+                <p>{{ product.stock }}</p>
             </div>
-            <div
-                v-for="(product, index) in products" :key="index"
-            >
-                <ProductListItem :product="product" />
         </div>
-        </div>
-    </div> -->
+        <!-- 팝업 랜더링 -->
+         <BaseOverlay v-if="route.name === 'ProductDetail'" @close="closePopup">
+            <router-view />
+        </BaseOverlay>
+    </div>
 </template>
 
 <style scoped>
 .product-list {
     width: 100%;
-    border: 5px solid lightgrey;
-    border-radius: 30px;
-    padding: 20px 0 20px 0;
-    min-height:250px;
 }
-
-.product-list .product-list-header {
+.product-list-item {
+    display: flex;
     width: 100%;
-    font-weight: bold;
-    font-size: 30px;
-    display: flex;
-    justify-content: center;
-}
-
-.product-list .product-list-content-nav {
-    display: flex;
     justify-content: space-around;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin: 5px 0 5px 0;
 }
 </style>

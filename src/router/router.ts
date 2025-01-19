@@ -15,21 +15,24 @@ import { showInfoAlert } from '../utils/alertUtil';
 
 const routes = [
     { path: '', component: ProductListView},
-    { path: '/admins',
+    { 
+        path: '/admins',
         children: [
             {   path: '', component: AdminView}
         ]
     },
-    { path: '/users',
+    { 
+        path: '/users',
         component: UserListView,
         children: [
             {   path: '/users/:id', component: UserDetailView , name: "UserDetail"},
         ]
     },
-    { path: '/products',
+    {   
+        path: '/products',
+        component: ProductListView,
         children: [
-            {   path: '', component: ProductListView    },
-            {   path: ':id', component: ProductDetailView, name: "productDetail" },
+            {   path: '/products/:id', component: ProductDetailView, name: "ProductDetail" },
         ]
     },
     { path: '/login', component: LoginView},
