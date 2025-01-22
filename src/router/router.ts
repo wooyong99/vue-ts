@@ -2,7 +2,7 @@ import { createWebHistory , createRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth';
 import Swal from 'sweetalert2'
 import LoginView from '../views/users/LoginView.vue';
-import JoinView from '../views/users/JoinView.vue';
+import JoinView from '../views/users/SignupView.vue';
 import UserListView from '../views/users/UserListView.vue';
 import UserDetailView from '../views/users/UserDetailView.vue';
 import NiceTemplate from '../../note/NiceTemplate.vue';
@@ -11,6 +11,7 @@ import AdminView from '../views/AdminListView.vue';
 import ProductDetailView from '../views/products/ProductDetailView.vue';
 import ProductListView from '../views/products/ProductListView.vue';
 import { showInfoAlert } from '../utils/alertUtil';
+import SignupView from '../views/users/SignupView.vue';
 
 
 const routes = [
@@ -36,7 +37,7 @@ const routes = [
         ]
     },
     { path: '/login', component: LoginView},
-    { path: '/join', component: JoinView},
+    { path: '/join', component: SignupView},
     { path: '/api/nice', component: NiceTemplate},
     { path: '/nice/callback', component: NiceCallback}
 ]

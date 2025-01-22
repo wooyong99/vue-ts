@@ -1,0 +1,8 @@
+{
+    "status": "BAD_REQUEST",
+    "errorMessage": "이미 존재하는 회원입니다.",
+    "timestamp": "2025-01-21T16:18:21.5187016",
+    "errors": null,
+    "code": "4001",
+    "errorCodeMessage": "잘못된 요청입니다."
+}

@@ -1,0 +1,10 @@
+{
+    "status": "BAD_REQUEST",
+    "errorMessage": "유효하지 않은 요청입니다",
+    "timestamp": "2025-01-21T16:20:23.9296075",
+    "errors": {
+        "password": "비밀번호는 필수 항목입니다."
+    },
+    "code": "4001",
+    "errorCodeMessage": "잘못된 요청입니다."
+}

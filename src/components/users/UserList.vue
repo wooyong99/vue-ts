@@ -4,37 +4,12 @@ import axios from 'axios';
 import router from '../../router/router';
 import BaseOverlay from '../BaseOverlay.vue';
 import { useRoute } from 'vue-router';
+import useAxios from '../../apis/http';
+import { UserListResponse } from '../../types/UserTypes';
 
-interface User {
-    id: number,
-    email: string,
-    username: string,
-    password: string,
-    createdAt : string,
-    age?: number
-}
-
-const users = ref<User[]>([])
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const users = ref<UserListResponse[] | null>([])
 const route = useRoute();
-
-async function fetchData() {
-    await axios.get('../../../../dummy/users/list.json')
-    .then((res) => {
-        console.log(res.data)
-        console.log(res.data)
-        console.log(res.data)
-        users.value = res.data;
-    })
-    .catch((res) => {
-        console.log(res)
-    })
-    .finally(() => {
-    });
-}
-onMounted(() => {
-    fetchData()
-})
+const { $get } = useAxios<UserListResponse[]>();
 
 function openPopup(userId:number) {
     router.push(`/users/${userId}`)
@@ -44,6 +19,18 @@ function closePopup(){
     router.push('/users')
 }
 
+async function fetchData() {
+    const response = await $get('dummy/users/list.json')
+    if ( response.status == 200 ){
+        users.value = response.data;
+    } else {
+        console.error( response.error );
+    }
+}
+
+onMounted(() => {
+    fetchData()
+})
 </script>
 
 <template>

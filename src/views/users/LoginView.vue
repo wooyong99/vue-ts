@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import Container from '../../components/BaseContainer.vue';
-import { ref } from 'vue'
+import BaseContainer from '../../components/BaseContainer.vue';
+import { ref, toRaw } from 'vue'
 import { useAuthStore } from '../../stores/auth';
-import Overlay from '../../components/BaseOverlay.vue';
-import { showSuccessAlert } from '../../utils/alertUtil';
+import { showErrorAlert, showInfoAlert, showSuccessAlert } from '../../utils/alertUtil';
+import { showErrorToast } from '../../utils/toastUtils';
+import BaseLoading from '../../components/BaseLoading.vue';
+import useAxios from '../../apis/http';
+import { LoginResponse } from '../../types/AuthTypes';
 
 type LoginForm = {
     email: string;
@@ -15,62 +18,124 @@ const inputData = ref<LoginForm>({
     email: '',
     password: '',
 })
+
+const emailInputRef = ref<HTMLInputElement | null>(null);
+const passwordInputRef = ref<HTMLInputElement | null>(null);
+
+
 const isLoading = ref(false);
 const auth = useAuthStore();
 const router = useRouter();
+const { $post } = useAxios<LoginResponse>();
 
-const asyncLogin = async (isSuccess: Boolean) => {
+const validateInputs = (): boolean => {
+    if(!inputData.value.email.trim()) {
+        showErrorToast("아이디를 입력해주세요.")
+        emailInputRef.value?.focus();
+        return false;
+    }
+    if(!inputData.value.password.trim()) {
+        showErrorToast("비밀번호를 입력해주세요.")
+        passwordInputRef.value?.focus();
+        return false;
+    }
+    return true;
+}
+
+const fetchLogin = async (isSuccess: Boolean) => {
+    if (!validateInputs()) return;
+
     isLoading.value = true;
-
-    await delay(1000)
-
-    if( isSuccess ){
-        console.log(inputData.value.email)
-        console.log(inputData.value.password)
+    const response = await $post(isSuccess ? 'dummy/users/loginSuccess.json' : 'fail', 
+        {
+            email:'hello'
+        }
+    );
+    
+    if( response.status == 200){
+        const data = response.data
+        console.log(data?.status)        
+        console.log(data?.code)        
         showSuccessAlert("로그인 성공", "로그인을 성공했습니다.")
         auth.login(1, "token", ["USER"]);
         router.push('/users')
     } else {
-        showSuccessAlert("로그인 실패", "로그인을 실패했습니다.")
+        console.log(response.error?.code)
+        console.log(response.error?.message)
+        showErrorAlert("로그인 실패", response.data?.errorMessage)
     }
-
     isLoading.value = false;
 }
 
-// Function to simulate a 1-second delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 </script>
 <template>
-    <Container id="login-view" class="border-4 rounded-3xl">
-        <div class="font-bold text-3xl my-5">로그인</div>
-        <div class="my-5">
-            <div>
-                이메일  <input type="text" v-model="inputData.email" placeholder="이메일을 입력해주세요."/>
+    <BaseContainer class="login-view">
+        <div class="login-view-header">로그인</div>
+        <div class="login-view-form">
+            <div class="login-view-form-field">
+                <label class="login-view-form-label">이메일 : </label>
+                <input 
+                    ref="emailInputRef"
+                    class="login-view-form-input" 
+                    type="text" 
+                    v-model="inputData.email" 
+                    placeholder="이메일을 입력해주세요."
+                />
             </div>
-            <div>
-                비밀번호 : <input type="password" v-model="inputData.password" placeholder="비밀번호를 입력해주세요."/>
+            <div class="login-view-form-field">
+                <label class="login-view-form-label">비밀번호 : </label>
+                <input 
+                    ref="passwordInputRef"
+                    class="login-view-form-input" 
+                    type="password" 
+                    v-model="inputData.password"
+                    placeholder="비밀번호를 입력해주세요."
+                />
             </div>
         </div>
-        <div class="my-5">
-            <button class="border-4 rounded-3xl px-3 py-1" @click="() => asyncLogin(true)">로그인 성공 버튼</button>
-            <button class="border-4 rounded-3xl px-3 py-1" @click="() => asyncLogin(false)">로그인 실패 버튼</button>
+        <div class="login-view-footer">
+            <button class="login-view-footer-btn" @click="() => fetchLogin(true)">로그인 성공 버튼</button>
+            <button class="login-view-footer-btn" @click="() => fetchLogin(false)">로그인 실패 버튼</button>
         </div>
-        <Overlay v-if="isLoading">
-            <div class="modal">
+        <BaseLoading v-if="isLoading">
+            <div>
                 로그인 진행 중 ...
             </div>
-        </Overlay>
-    </Container>
+        </BaseLoading>
+    </BaseContainer>
 </template>
 <style scoped>
-#login-view .modal {
-    position: fixed;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size:30px;
-    font-weight:bold;
+.login-view {
+    display: flex;
+    justify-content: center;    
+}
+.login-view-header {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+.login-view-form-field {
+    display: flex;
+    align-items: center;
+    gap: 30px
+
+}
+.login-view-form-label {
+    font-size: 15px;
+}
+.login-view-form-input {
+    border: 3px solid lightgrey;
+    border-radius: 15px;
+    padding: 8px 10px;
+}
+.login-view-footer {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+}
+.login-view-footer-btn {
+    border: 4px solid lightgray;
+    border-radius: 25px;
+    padding: 10px 15px;
 }
 </style>

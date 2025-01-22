@@ -5,18 +5,11 @@ import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import Overlay from '../../components/BaseOverlay.vue';
 import axios from 'axios';
-
-type Product = {
-    id: number;
-    name: string;
-    description: string;
-    stock: number;
-    price: number
-}
+import { ProductDetailResponse } from '../../types/ProductTypes';
 
 const route = useRoute();
 const router = useRouter();
-const product: Ref<Product | null> = ref<Product | null>(null);
+const product: Ref<ProductDetailResponse | null> = ref(null);
 const productId = ref<number|null>(null);
 
 
@@ -24,7 +17,7 @@ async function fetchData () {
     console.log(productId);
     await axios.get('../../../../dummy/products/list.json')
         .then((res) => {
-            product.value = res.data.find((item: Product) => item.id == productId.value) || null
+            product.value = res.data.find((item: ProductDetailResponse) => item.id == productId.value) || null
         })
         .catch((res) => {
         });

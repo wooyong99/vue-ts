@@ -4,9 +4,12 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { watch, computed } from 'vue';
 import { showSuccessAlert } from '../utils/alertUtil';
+import { useDarkMode } from '../composables/darkMode';
 
 const router = useRouter();
 const auth = useAuthStore();
+
+const { isDarkMode, toggleDarkMode } = useDarkMode();
 
 const isLogin = computed(() => auth.isLogin);
 
@@ -25,6 +28,7 @@ function logout() {
 <template>
     
     <Container>
+        <div @click="(toggleDarkMode)">다크모드</div>
         <div v-if="isLogin" class="w-full flex justify-end gap-5 px-10 my-3">
             <button @click="logout" class="border-4 rounded-full px-4 py-2">
                 로그아웃

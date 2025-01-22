@@ -3,17 +3,10 @@ import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue'
 import { useRoute } from 'vue-router';
 import axios from 'axios'
-
-type User = {
-    id : number
-    email : string,
-    password : string,
-    username : string,
-    createdAt : string
-}
+import { UserDetailResponse } from '../../types/UserTypes';
 
 const route = useRoute();
-const user:Ref<User|undefined> = ref(undefined);
+const user:Ref<UserDetailResponse|undefined> = ref(undefined);
 const isLoading = ref(true);
 const userId = ref<number|null>(null);
 
@@ -21,7 +14,7 @@ async function fetchUser(id: number) {
     await axios
         .get('../../../../dummy/users/list.json')
         .then((res) => {
-            user.value = res.data.find((item: User) => item.id == userId.value) || null
+            user.value = res.data.find((item: UserDetailResponse) => item.id == userId.value) || null
         })
         .catch((res) => {
         })

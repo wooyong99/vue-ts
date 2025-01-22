@@ -2,37 +2,24 @@
 import { ref, onMounted, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Ref } from 'vue'
-import axios from 'axios'
-import BaseList from '../BaseList.vue';
+import useAxios from '../../apis/http'
 import BaseOverlay from '../BaseOverlay.vue';
-type Product = {
-    id: number,
-    name: string,
-    description: string,
-    stock: number,
-    price : number
-}
+import { ProductListResponse } from '../../types/ProductTypes';
 
-const products: Ref<Product[]> = ref([]); // 반응형 데이터
+const products: Ref<ProductListResponse[] | null> = ref([]); // 반응형 데이터
 const isLoading: Ref<Boolean> = ref(true);
 const route = useRoute();
 const router = useRouter();
+const { $get } = useAxios<ProductListResponse[]>();
 
-async function fetchData():Promise<void> {
-    await delay(1000);
-    try {
-        isLoading.value = true; // 로딩 상태 시작
-        const response = await axios.get('../../../dummy/products/list.json');
-        products.value = response.data; // 응답 데이터 업데이트
-        console.log(products.value)
-    } catch (error) {
-        console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
-    } finally {
-        isLoading.value = false; // 로딩 상태 종료
+async function fetchData() {
+    const response = await $get('dummy/products/list.json');
+    if ( response.status == 200 ) {
+        products.value = response.data
+    } else {
+        console.log("Error : ", response.error);
     }
 }
-// Function to simulate a 1-second delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 onMounted(() => {
     fetchData()
@@ -72,6 +59,9 @@ function closePopup() {
 <style scoped>
 .product-list {
     width: 100%;
+}
+.product-list-con {
+    min-height: 30px;
 }
 .product-list-item {
     display: flex;

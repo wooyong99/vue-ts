@@ -2,14 +2,15 @@
 import { RouterView } from 'vue-router';
 import TheHeader from './layouts/TheHeader.vue';
 import TheFooter from './layouts/TheFooter.vue';
+
 </script>
 
 <template>
-   <TheHeader />
-   <transition name="fade">
+  <TheHeader />
+  <transition name="fade">
       <RouterView />
-   </transition>
-   <TheFooter />
+  </transition>
+  <TheFooter />
 </template>
 
 <style scoped>
