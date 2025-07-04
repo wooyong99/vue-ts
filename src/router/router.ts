@@ -5,17 +5,22 @@ import LoginView from '../views/users/LoginView.vue';
 import JoinView from '../views/users/SignupView.vue';
 import UserListView from '../views/users/UserListView.vue';
 import UserDetailView from '../views/users/UserDetailView.vue';
-import NiceTemplate from '../../note/NiceTemplate.vue';
-import NiceCallback from '../../note/NiceCallback.vue';
+import NiceCallback from '../views/NiceCallback.vue';
+import NiceTemplate from '../views/NiceTemplate.vue';
 import AdminView from '../views/AdminListView.vue';
 import ProductDetailView from '../views/products/ProductDetailView.vue';
 import ProductListView from '../views/products/ProductListView.vue';
 import { showInfoAlert } from '../utils/alertUtil';
 import SignupView from '../views/users/SignupView.vue';
+import PaymentView from '../views/PaymentView.vue';
 
 
 const routes = [
     { path: '', component: ProductListView},
+    {
+        path: '/payments',
+        component: PaymentView
+    },
     { 
         path: '/admins',
         children: [
